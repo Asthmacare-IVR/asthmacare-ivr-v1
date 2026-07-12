@@ -4,8 +4,8 @@
 
 | Metric | Value |
 |---|---|
-| Current Phase | 2 of 13 — Project Foundation |
-| Current Version | v0.1.0 (Phase 2 unreleased — structure only) |
+| Current Phase | Phase 4 Complete — Business Rules (Frozen) |
+| Current Version | v0.4.0 (Architecture complete through Phase 4) |
 | Hardware Status | SIM900A ordered / USB-TTL ordered / Pi not purchased |
 | Blockers | Phases 6 and 12 blocked on hardware |
 
@@ -25,7 +25,7 @@
 
 **Blockers:** None.
 
-### Phase 2 – Project Foundation (In Progress)
+### Phase 2 – Project Foundation (Complete)
 
 **Objective:** Create approved folder structure with single-responsibility
 boundaries; no runtime logic.
@@ -38,9 +38,45 @@ boundaries; no runtime logic.
 - Empty `telephony/interface.py` contract placeholder
 - Risk R-004 logged (queue/ shadows stdlib `queue` module)
 
-**Pending:**
-- Confirmation of docs/ vs root-level documentation placement assumption
-- Git commit of Phase 2 structure
-- Approval to begin Phase 3
+Completed: July 2026
 
 **Blockers:** None (structural risk R-004 tracked, not blocking).
+
+## Phase 3 – System Architecture (Complete)
+
+**Objective:**
+Define the high-level architecture, dependency boundaries, module responsibilities, and telephony abstraction for the Pilot v1.0.
+
+**Status:** ✅ Frozen
+
+**Deliverables:**
+- docs/SYSTEM_ARCHITECTURE.md
+
+## Phase 3.1 – Database Design (Complete)
+
+**Objective:**
+Define the persistence architecture using the Repository pattern while keeping the Queue Engine database-independent.
+
+**Status:** ✅ Frozen
+
+**Deliverables:**
+- docs/DATABASE_DESIGN.md
+- ADR-003
+
+## Phase 4 – Business Rules (Complete)
+
+**Objective:**
+Define business behavior independent of implementation.
+
+**Status:** ✅ Frozen
+
+**Deliverables:**
+- docs/BUSINESS_RULES.md
+
+## Current Work
+
+Next Phase:
+
+Phase 4.1 — Queue Rules
+
+
