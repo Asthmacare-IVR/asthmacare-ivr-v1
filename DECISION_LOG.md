@@ -156,3 +156,76 @@ inside `docs/` (assumed) or at repository root (existing convention for
 README/CHANGELOG/ROADMAP/TODO/DECISION_LOG/RISK_REGISTER/PROJECT_PROGRESS).
 Assumption stated in `docs/README.md`; will follow it unless corrected
 before Phase 3.
+
+---
+
+## ADR-003: Data Access Layer Architecture (Repository / DAO Pattern)
+
+**Date:** Phase 3.1
+**Status:** Approved by Chief Architect
+**Raised by:** Senior Engineering Partner — data persistence architecture for Pilot v1.0 and future database migration.
+
+### Context
+
+The Queue Engine requires persistent storage while remaining independent of
+the underlying database implementation.
+
+Pilot v1.0 targets SQLite only.
+
+Future versions may migrate to PostgreSQL.
+
+The Engineering Charter requires that replacing the database must not require
+changes to the Queue Engine, Business Rules, REST API, or Dashboard.
+
+### Decision
+
+The project adopts the **Repository / DAO Pattern**.
+
+The Queue Engine depends only on abstract Repository Interface(s).
+
+Concrete repository implementations encapsulate all storage-specific logic.
+
+SQLite will be implemented during Phase 5.
+
+Future PostgreSQL support will be provided by implementing the same repository
+contracts.
+
+### Rationale
+
+- Aligns with the Dependency Inversion Principle already adopted for the
+  Telephony Interface (ADR-001).
+- Keeps business logic independent from storage technology.
+- Allows Queue Engine testing with fake/mock repositories.
+- Isolates future SQLite → PostgreSQL migration to repository
+  implementations only.
+- Maintains a consistent architectural style across external dependencies.
+
+### Consequences
+
+**Positive**
+
+- Storage independence.
+- Improved testability.
+- Better separation of concerns.
+- Reduced migration cost.
+- Consistent architecture across telephony and persistence layers.
+
+**Trade-offs**
+
+- Additional abstraction layer.
+- Slightly increased implementation effort.
+- Repository contracts must avoid leaking storage-specific concepts.
+
+### Action Items
+
+1. Phase 4 defines Business Rules.
+2. Phase 5 designs Repository Interface(s).
+3. Phase 5 implements SQLiteRepository.
+4. Future PostgreSQL support remains out of scope for Pilot v1.0.
+
+### Related Documents
+
+- `docs/SYSTEM_ARCHITECTURE.md`
+- `docs/DATABASE_DESIGN.md`
+
+---
