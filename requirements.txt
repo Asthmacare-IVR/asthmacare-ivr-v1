@@ -8,3 +8,8 @@ pytest==8.3.3
 black==24.10.0
 ruff==0.7.4
 isort==5.13.2
+
+# Runtime — Backend API Foundation (GitHub Issue #1)
+fastapi==0.115.5
+uvicorn[standard]==0.32.1
+pydantic-settings==2.6.1
