@@ -1,0 +1,31 @@
+# Virtual environment
+venv/
+env/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+
+# Database (pilot SQLite files - never commit patient data)
+*.db
+*.sqlite3
+
+# VS Code
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json
+
+# Environment / secrets
+.env
+*.local
+
+# OS
+Thumbs.db
+.DS_Store
+
+# Logs
+*.log
