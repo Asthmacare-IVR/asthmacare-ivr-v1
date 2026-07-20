@@ -38,7 +38,7 @@ yet performed), I-3 (Queue Engine integration test fixture defect), I-4
 
 This restructuring **moved documentation into subject-area folders,
 grouped placeholder modules under `backend/`, and merged in the
-pre-approved Queue Engine package (including its pre-requisite `queue/` →
+pre-approved Queue Engine package (including its pre-requisite `queue_engine` →
 `queue_engine/` rename)**. It did not alter any architecture decision,
 business rule, test, or piece of application logic. Full move-by-move
 accounting: `PROJECT_RESTRUCTURE_REPORT.md` at the repository root.

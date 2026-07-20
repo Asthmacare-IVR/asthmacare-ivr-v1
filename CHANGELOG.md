@@ -15,7 +15,7 @@ Format follows [Keep a Changelog](https://keepachangelog.com/), versioning follo
   `tests/test_queue_engine_ordering.py`,
   `tests/test_queue_engine_integration.py`
 - `docs/adr/ADR-006-r004-resolution.md` — approves and documents the
-  `queue/` → `queue_engine/` rename, resolving risk R-004
+  `queue_engine` → `queue_engine/` rename, resolving risk R-004
 - Reorganized repository layout: `docs/{adr,architecture,roadmap,reviews}/`
   subfolders; `backend/` grouping `api/, config/, dashboard/, assets/,
   scripts/, logs/`; `docs/reviews/R001`–`R006` plus `MASTER_REVIEW/`
@@ -24,7 +24,7 @@ Format follows [Keep a Changelog](https://keepachangelog.com/), versioning follo
   reorganization
 
 ### Changed
-- Top-level `queue/` package **renamed** to `queue_engine/` (ADR-006,
+- Top-level `queue_engine` package **renamed** to `queue_engine/` (ADR-006,
   approved) — resolves risk R-004 (shadowing the Python standard library
   `queue` module). All imports referencing `queue` (local package) now
   reference `queue_engine`.
@@ -126,14 +126,14 @@ Format follows [Keep a Changelog](https://keepachangelog.com/), versioning follo
 - `docs/architecture/DATABASE_DESIGN.md` (frozen)
 - ADR-003 recorded
 
-## [Unreleased] - Phase 2: Project Foundation
+## [0.2.0] - Initial Project Structure
 
 ### Added
-- Approved top-level folder structure (ADR-002): `api/, telephony/, queue/,
+- Approved top-level folder structure (ADR-002): `api/, telephony/, queue_engine,
   database/, dashboard/, config/, docs/, tests/, logs/, assets/, scripts/,
   .github/`
 - Directory-responsibility `README.md` in every top-level folder
-- `__init__.py` package markers in `api/`, `telephony/`, `queue/`,
+- `__init__.py` package markers in `api/`, `telephony/`, `queue_engine`,
   `database/`, `config/`
 - Empty `telephony/interface.py` — Telephony Interface contract placeholder
   (no methods yet; structure only per ADR-002)
@@ -141,7 +141,7 @@ Format follows [Keep a Changelog](https://keepachangelog.com/), versioning follo
 ### Notes
 - No runtime logic, no SIM900A code, no FastAPI application code — structure
   only, as scoped by ADR-002.
-- R-004 risk logged: `queue/` package name shadows Python stdlib `queue`
+- R-004 risk logged: `queue_engine` package name shadows Python stdlib `queue`
   module; must be resolved before Phase 8.
 
 ## [0.1.0] - Phase 1: Development Environment

@@ -11,7 +11,7 @@ Full text lives in `docs/adr/`. Summary:
 | ADR-003 | Referenced in `docs/reviews/R003/README.md` | Applied | Database Design decisions (Phase 3.1) |
 | ADR-004 | Referenced in `queue_engine/state_machine.py`, `docs/architecture/QUEUE_RULES.md` | Applied | Removed `IN_SERVICE → CANCELLED` transition; also resolved Architecture Gate Review finding C-1 (Authority Hierarchy) |
 | ADR-005 | `docs/adr/ADR-005-phase6-open-decisions.md` | Approved | Formally closes `SQLITE_REPOSITORY_DESIGN.md` §15 Open Decisions OD-1..OD-4 |
-| ADR-006 | `docs/adr/ADR-006-r004-resolution.md` | Approved | Renames `queue/` → `queue_engine/`, resolving risk R-004 (stdlib `queue` shadowing); pre-requisite for Queue Engine implementation |
+| ADR-006 | `docs/adr/ADR-006-r004-resolution.md` | Approved | Renames `queue_engine` → `queue_engine/`, resolving risk R-004 (stdlib `queue` shadowing); pre-requisite for Queue Engine implementation |
 
 No ADR was altered, superseded silently, or reinterpreted during this
 restructuring — all six above are carried forward unchanged.

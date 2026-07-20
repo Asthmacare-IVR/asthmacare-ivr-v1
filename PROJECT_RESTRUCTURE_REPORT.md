@@ -28,7 +28,7 @@ business-rule change, no rewriting of the Queue Engine, no test removal.
 | `assets/README.md` | `backend/assets/README.md` |
 | `scripts/README.md` | `backend/scripts/README.md` |
 | `logs/README.md` | `backend/logs/README.md` |
-| `queue/` (placeholder: `README.md`, `__init__.py`) | **removed**, superseded by `queue_engine/` (see §3 — approved rename, not a data-preserving move, since `queue/` held no runtime logic) |
+| `queue_engine` (placeholder: `README.md`, `__init__.py`) | **removed**, superseded by `queue_engine/` (see §3 — approved rename, not a data-preserving move, since `queue_engine` held no runtime logic) |
 
 `database/`, `telephony/`, `tests/`, `pyproject.toml`, `requirements.txt`,
 `.gitignore`, `.github/`, `.vscode/` were relocated into the new root
@@ -38,7 +38,7 @@ unchanged (same relative structure, same file contents).
 
 | Original | Renamed to | Authorization |
 |---|---|---|
-| `queue/` (directory) | `queue_engine/` (directory) | ADR-006 (`docs/adr/ADR-006-r004-resolution.md`), approved 2026-07-20, resolving risk R-004 |
+| `queue_engine` (directory) | `queue_engine/` (directory) | ADR-006 (`docs/adr/ADR-006-r004-resolution.md`), approved 2026-07-20, resolving risk R-004 |
 
 No other file or module was renamed.
 
@@ -46,7 +46,7 @@ No other file or module was renamed.
 
 | Merge | Result |
 |---|---|
-| `queue_engine_package.zip`'s `queue_engine/` module into the main repo | `queue_engine/` now sits at the repo root, replacing the empty `queue/` placeholder per the approved ADR-006 rename |
+| `queue_engine_package.zip`'s `queue_engine/` module into the main repo | `queue_engine/` now sits at the repo root, replacing the empty `queue_engine` placeholder per the approved ADR-006 rename |
 | `queue_engine_package.zip`'s `tests/test_queue_engine_*.py` (3 files) into the main repo's `tests/` | Now alongside all existing tests in the single top-level `tests/` folder (target structure specifies one `tests/` folder, not a per-module one) |
 | `RISK_REGISTER.md` (original) + `RISK_REGISTER_updated.md` (from Queue Engine package) | `docs/roadmap/RISK_REGISTER.md` — R-004 marked resolved (struck through, not deleted), resolution detail added, new risk R-005 logged (see §7 below) |
 | `queue_engine_package.zip`'s `docs/ADR-006-r004-resolution.md` | `docs/adr/ADR-006-r004-resolution.md` (moved in, not merged with another file — no prior ADR-006 existed) |
@@ -76,7 +76,7 @@ copy of each underlying document rather than duplicating its content.
 
 ## 6. Files removed
 
-- Only the two placeholder files under the old `queue/` (`README.md`,
+- Only the two placeholder files under the old `queue_engine` (`README.md`,
   `__init__.py`) were removed, and only because they are fully superseded by
   the approved `queue_engine/` rename (ADR-006) — their content (structure-
   only placeholders, no runtime logic) is preserved in spirit in

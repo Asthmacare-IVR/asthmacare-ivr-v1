@@ -4,7 +4,7 @@
 **Baseline:** Git tag `v0.4.0` (approved architecture baseline)
 **Status:** Frozen upon Chief Architect approval
 **Depends on:** `SYSTEM_ARCHITECTURE.md` (Phase 3), `BUSINESS_RULES.md` (Phase 4)
-**Governs:** `queue/` module (Queue Engine) — architecture only, no implementation
+**Governs:** `queue_engine` module (Queue Engine) — architecture only, no implementation
 
 ---
 
@@ -392,7 +392,7 @@ set (Section 5.2), transition table (Section 5.3), ordering discipline
 Engine).
 
 This document must be read together with the open item in `RISK_REGISTER.md`
-(R-004: `queue/` package name shadowing Python's standard library `queue`
+(R-004: `queue_engine` package name shadowing Python's standard library `queue`
 module). R-004 is a naming/implementation risk and does not affect any rule
 defined in this document; it must nonetheless be resolved by ADR before
 Phase 8 implementation begins, per its logged mitigation.

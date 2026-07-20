@@ -299,7 +299,7 @@ not settled by this document:
 - **OD-2:** Whether unit-of-work spanning multiple Repository Interface
   calls is required by any Business Rule not yet exercised in
   `BUSINESS_RULES.md`, which would affect Section 9.
-- **OD-3:** Interaction between R-004 (top-level `queue/` package shadowing
+- **OD-3:** Interaction between R-004 (top-level `queue_engine` package shadowing
   stdlib `queue`, per `RISK_REGISTER.md`) and any Database-layer module
   naming — to be confirmed clear of collision before Phase 6 begins.
 - **OD-4:** Whether `DATABASE_DESIGN.md`'s identity model requires

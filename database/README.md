@@ -9,7 +9,7 @@
 - Seed scripts
 
 **Dependency rule:** `database/` depends on nothing else in this project. It
-is depended upon by `queue/` and `api/`.
+is depended upon by `queue_engine` and `api/`.
 
 **Status (Phase 2):** Structure only. Schema and repository implementation
 begin in Phase 5 – Database Design.

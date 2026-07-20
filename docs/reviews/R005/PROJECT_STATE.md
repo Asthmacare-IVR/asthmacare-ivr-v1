@@ -35,7 +35,7 @@ Steps taken:
 6. Merged the audited `database/`, `tests/`, and `docs/ADR-005-*.md` into the
    live `Asthmacare-IVR` repo, replacing only the Phase 2 placeholder stub
    `database/__init__.py` — no other existing file (docs, config/, api/,
-   queue/, telephony/, dashboard/) was modified except `pyproject.toml`
+   queue_engine, telephony/, dashboard/) was modified except `pyproject.toml`
    (one line added, see §3).
 7. Re-ran every check from the project root to confirm the merge introduced
    no regressions.
@@ -118,14 +118,14 @@ Asthmacare-IVR/
 │   │   └── factory.py               SqliteConfig, SqliteRepositoryProvider — the only construction entry point
 │   └── memory/                     Mock/In-Memory Repository (same interfaces, same invariants, for Queue Engine tests)
 ├── tests/                          Contract tests (run against both implementations) + UoW, migration, concurrency, error-translation tests
-├── api/, config/, dashboard/, queue/, telephony/   Phase 2 placeholders — unchanged, out of scope for this audit
+├── api/, config/, dashboard/, queue_engine, telephony/   Phase 2 placeholders — unchanged, out of scope for this audit
 └── pyproject.toml, requirements.txt   pytest 8.3.3 already pinned; pythonpath fix applied
 ```
 
 Dependency direction matches `DATABASE_DESIGN.md` §5 and
 `SYSTEM_ARCHITECTURE.md` §4: `database.sqlite` and `database.memory` are
 leaves; only `database.interfaces`/`database.domain`/`database.errors` are
-meant to be imported by anything above the Database boundary (`queue/`,
+meant to be imported by anything above the Database boundary (`queue_engine`,
 `api/` — not yet implemented).
 
 ---
@@ -151,7 +151,7 @@ meant to be imported by anything above the Database boundary (`queue/`,
 ## 6. Remaining work (unchanged from before this audit — none of it was in scope)
 
 - [ ] Phase 7 — Telephony Adapter (blocked on SIM900A hardware delivery)
-- [ ] Phase 8 — Queue Engine (must resolve R-004 — `queue/` package shadows stdlib `queue` — before starting; see RISK_REGISTER.md)
+- [ ] Phase 8 — Queue Engine (must resolve R-004 — `queue_engine` package shadows stdlib `queue` — before starting; see RISK_REGISTER.md)
 - [ ] Phase 9 — Business Rules implementation (currently only documented in `docs/BUSINESS_RULES.md`, not coded)
 - [ ] Phase 10 — Admin Dashboard
 - [ ] Phase 11 — REST API
@@ -173,7 +173,7 @@ meant to be imported by anything above the Database boundary (`queue/`,
    authoritative test run — this has not happened yet on this codebase.
 2. **The `repository_interface.py` fork is unresolved** — see §2. No code
    change was made in response to it since the file itself wasn't provided.
-3. **R-004 (`queue/` shadows stdlib `queue`) is still open** — pre-existing,
+3. **R-004 (`queue_engine` shadows stdlib `queue`) is still open** — pre-existing,
    not introduced or affected by this audit, but blocks Phase 8 per
    `RISK_REGISTER.md`.
 4. **Optimistic-locking pre-read in `SqliteQueueEntryRepository.update()`**

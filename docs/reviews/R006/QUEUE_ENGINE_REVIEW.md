@@ -4,7 +4,7 @@
 
 **Scope:** The approved Queue Engine package (`queue_engine/`), merged into
 the live `Asthmacare-IVR` repository as part of this restructuring, plus the
-pre-requisite `queue/` → `queue_engine/` rename (ADR-006, resolving risk
+pre-requisite `queue_engine` → `queue_engine/` rename (ADR-006, resolving risk
 R-004).
 
 ## Delivered
@@ -74,7 +74,7 @@ result.
 
 Core Queue Engine modules (state machine, ordering, retry, timeout, events,
 engine orchestration) integrate cleanly with the existing `database.domain`
-/ `database.interfaces` contracts and the `queue/` → `queue_engine/` rename
+/ `database.interfaces` contracts and the `queue_engine` → `queue_engine/` rename
 is complete and consistent throughout the merged tree. The one integration
 test fixture defect above is scoped to test code only — no production
 (`queue_engine/*.py`) code is affected — and is deferred to R006.1 Hardening

@@ -31,12 +31,12 @@
 boundaries; no runtime logic.
 
 **Completed:**
-- Folder structure created per ADR-002 (`api/, telephony/, queue/, database/,
+- Folder structure created per ADR-002 (`api/, telephony/, queue_engine, database/,
   dashboard/, config/, docs/, tests/, logs/, assets/, scripts/, .github/`)
 - Directory-responsibility README.md in every top-level folder
 - `__init__.py` in Python package directories
 - Empty `telephony/interface.py` contract placeholder
-- Risk R-004 logged (queue/ shadows stdlib `queue` module)
+- Risk R-004 logged (queue_engine shadows stdlib `queue` module)
 
 Completed: July 2026
 

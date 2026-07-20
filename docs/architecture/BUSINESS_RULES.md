@@ -439,10 +439,10 @@ designed, approved, or scheduled:
   conceptual stage between Queue Engine and Database. The approved
   top-level folder structure (`docs/DECISION_LOG.md`, ADR-002) does not
   currently define a separate top-level `business_rules/` package;
-  `queue/` is documented as covering "Queue Engine, appointment
+  `queue_engine` is documented as covering "Queue Engine, appointment
   workflow, queue algorithms, business orchestration." Whether the rules
   in this document are implemented as a distinct internal submodule of
-  `queue/`, or otherwise organized, is an implementation-structure
+  `queue_engine`, or otherwise organized, is an implementation-structure
   decision deferred to Phase 8 and must be proposed via ADR before
   implementation begins — this document does not resolve it.
 - **Relationship to the Repository Interface (`docs/DATABASE_DESIGN.md`).**

@@ -6,7 +6,7 @@ the schema defined in `DATABASE_DESIGN.md`" and §12 reserves "operational
 parameters" to the Database boundary. Tracking *which* schema revision a
 given database file is on is such an operational concern: it lives
 entirely inside `database.sqlite` and is invisible above the Database
-boundary — nothing in `queue/`, `api/`, or `database.interfaces` is aware
+boundary — nothing in `queue_engine`, `api/`, or `database.interfaces` is aware
 migrations exist (SQLITE_REPOSITORY_DESIGN.md §3, §6).
 
 Each migration is a numbered, named, idempotent-on-reapply DDL step.
@@ -44,9 +44,7 @@ def _apply_initial_schema(connection: sqlite3.Connection) -> None:
 # shipped — a schema correction is a new migration with a higher version
 # number, never a rewrite of history (this is what makes `apply_migrations`
 # safe to run against a database that already has some migrations applied).
-_MIGRATIONS: tuple[Migration, ...] = (
-    Migration(1, "initial_schema", _apply_initial_schema),
-)
+_MIGRATIONS: tuple[Migration, ...] = (Migration(1, "initial_schema", _apply_initial_schema),)
 
 _TRACKING_TABLE_DDL = """
     CREATE TABLE IF NOT EXISTS schema_migrations (

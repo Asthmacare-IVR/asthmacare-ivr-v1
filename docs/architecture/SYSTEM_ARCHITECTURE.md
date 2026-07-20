@@ -68,7 +68,7 @@ Engine and every concrete adapter depend on a shared abstraction: the
 ```
                     ┌───────────────────┐
                     │   Queue Engine     │
-                    │  (queue/)          │
+                    │  (queue_engine)          │
                     └─────────┬──────────┘
                               │ depends on (calls methods on)
                               ▼
@@ -127,12 +127,12 @@ empty until Phase 7, per ADR-002.
 
 ### 3.4 Why this satisfies "Queue Engine must never import a concrete adapter"
 
-Because `queue/` only ever imports `telephony.interface`, never
+Because `queue_engine` only ever imports `telephony.interface`, never
 `telephony.adapters.sim900a` (or any future adapter module). At Phase 8,
 this will be enforced by:
 - Code review (manual)
 - Optionally, a static-analysis rule or `pytest` architecture test that
-  fails the build if `queue/` imports anything under
+  fails the build if `queue_engine` imports anything under
   `telephony/adapters/` — a decision to be proposed at Phase 8 planning
   time, not implemented here.
 
@@ -147,16 +147,16 @@ Queue Engine → Telephony Interface ← Telephony Adapter → Telephony Interfa
 
 | Module | May depend on | Must never depend on |
 |---|---|---|
-| `dashboard/` | `api/` (via HTTP only, not direct import) | `queue/`, `database/`, `telephony/` directly |
-| `api/` | `queue/` | `telephony/` directly, `database/` directly (goes through `queue/`) |
-| `queue/` | `telephony/interface.py`, `database/` | Any concrete `telephony/adapters/*` module |
-| `database/` | (nothing internal) | `queue/`, `api/`, `telephony/` |
+| `dashboard/` | `api/` (via HTTP only, not direct import) | `queue_engine`, `database/`, `telephony/` directly |
+| `api/` | `queue_engine` | `telephony/` directly, `database/` directly (goes through `queue_engine`) |
+| `queue_engine` | `telephony/interface.py`, `database/` | Any concrete `telephony/adapters/*` module |
+| `database/` | (nothing internal) | `queue_engine`, `api/`, `telephony/` |
 | `telephony/interface.py` | (nothing internal) | Everything — it is the innermost contract |
-| `telephony/adapters/*` (future) | `telephony/interface.py` | `queue/`, `api/`, `database/` |
+| `telephony/adapters/*` (future) | `telephony/interface.py` | `queue_engine`, `api/`, `database/` |
 | `config/` | (nothing internal) | Business logic of any kind |
 
 **Rationale:** This is a standard layered/hexagonal architecture. Each
-module can be tested in isolation; `queue/` can be fully tested
+module can be tested in isolation; `queue_engine` can be fully tested
 against a `MockAdapter` with zero hardware, which matters given SIM900A
 hardware delivery is currently blocked (see `docs/RISK_REGISTER.md`, R-003).
 
@@ -170,7 +170,7 @@ simpler path:
 **Alternative considered:** Queue Engine directly imports and calls SIM900A
 serial functions.
 **Rejected because:** Migrating to Cloud IVR later would require rewriting
-`queue/`, which the frozen baseline explicitly forbids ("without
+`queue_engine`, which the frozen baseline explicitly forbids ("without
 changes to the queue engine, business rules, database, or API").
 
 **Alternative considered:** A generic "Telephony Service" class instead of

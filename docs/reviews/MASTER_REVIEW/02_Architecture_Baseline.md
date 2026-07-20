@@ -19,7 +19,7 @@ AsthmaCare-IVR/
 │   ├── interfaces.py      Abstract Repository / Unit of Work contracts
 │   ├── sqlite/            Concrete SQLite Repository Interface implementation
 │   └── memory/            In-Memory/Mock Repository (Queue Engine test double)
-├── queue_engine/          Core orchestration (renamed from queue/, ADR-006)
+├── queue_engine/          Core orchestration (renamed from queue_engine, ADR-006)
 │   ├── engine.py           QueueEngine — transitions, ordering, timeouts, retries, events
 │   ├── state_machine.py    Transition validation (QUEUE_RULES.md §5.3)
 │   ├── ordering.py         Computed FIFO/priority position

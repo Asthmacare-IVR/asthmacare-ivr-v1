@@ -45,6 +45,6 @@ snapshot in the roadmap's own numbering.
 
 This merge also reorganized the repository layout (moving documentation into
 `docs/{adr,architecture,roadmap,reviews}/`, grouping placeholder modules
-under `backend/`, and renaming `queue/` → `queue_engine/` per ADR-006) without
+under `backend/`, and renaming `queue_engine` → `queue_engine/` per ADR-006) without
 altering any business logic, architecture decision, or existing test. Full
 detail: `PROJECT_RESTRUCTURE_REPORT.md` at the repository root.

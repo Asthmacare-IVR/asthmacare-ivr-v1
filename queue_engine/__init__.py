@@ -8,7 +8,7 @@ Per ADR-002 and ADR-006:
 - Must never import a concrete repository (SQLite, PostgreSQL)
 - Depends only on: telephony/interface.py, database/interfaces.py
 
-R-004 RESOLVED: Renamed from queue/ to avoid shadowing stdlib queue module.
+R-004 RESOLVED: Renamed from queue_engine to avoid shadowing stdlib queue module.
 """
 
 # Queue Engine exports will be added as implementation proceeds

@@ -1,4 +1,4 @@
-# ADR-006: Resolve R-004 — Rename queue/ to queue_engine/
+# ADR-006: Resolve R-004 — Rename queue_engine to queue_engine/
 
 **Status:** Approved
 **Date:** 2026-07-20
@@ -6,14 +6,14 @@
 **Raised by:** Development Team
 
 ## Context
-RISK_REGISTER.md R-004: Top-level `queue/` package shadows Python's 
-standard library `queue` module. This blocks Phase 8/9 (Queue Engine 
-implementation) because `import queue` resolves to local package instead 
-of stdlib, breaking `asyncio`, `concurrent.futures`, and any dependency 
+RISK_REGISTER.md R-004: Top-level `queue_engine` package shadows Python's
+standard library `queue` module. This blocks Phase 8/9 (Queue Engine
+implementation) because `import queue` resolves to local package instead
+of stdlib, breaking `asyncio`, `concurrent.futures`, and any dependency
 using `import queue`.
 
 ## Decision
-Rename top-level package: `queue/` → `queue_engine/`
+Rename top-level package: `queue_engine` → `queue_engine/`
 
 ## Rationale
 - Minimal surgical change (single directory rename + import updates)
@@ -28,10 +28,10 @@ Rename top-level package: `queue/` → `queue_engine/`
 - No external API impact (no REST API exists yet)
 
 ## Migration Steps
-1. Rename directory: `queue/` → `queue_engine/`
-2. Update `queue_engine/__init__.py` (was `queue/__init__.py`)
+1. Rename directory: `queue_engine` → `queue_engine/`
+2. Update `queue_engine/__init__.py` (was `queue_engine__init__.py`)
 3. Update `queue_engine/README.md`
-4. Update all docs referencing `queue/`
+4. Update all docs referencing `queue_engine`
 5. Verify no `import queue` (stdlib) in current codebase
 6. Run test suite: zero regressions
 

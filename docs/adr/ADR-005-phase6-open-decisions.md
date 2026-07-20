@@ -50,7 +50,7 @@ they don't need, and the capability exists for callers that do.
 
 **Rationale:** Building the mechanism now (during Phase 6, when it is a
 cheap, well-scoped addition) rather than retrofitting it once a
-multi-call Business Rule actually appears keeps `queue/`/Business Rules
+multi-call Business Rule actually appears keeps `queue_engine`/Business Rules
 implementation (Phase 8/9) from being blocked on a database-layer change.
 No currently-frozen Business Rule requires atomicity across more than one
 aggregate write; `tests/test_unit_of_work.py` exercises the mechanism
@@ -61,13 +61,13 @@ of need.
 aggregate writes to be atomic together (e.g., "creating a Visit and its
 first Queue Entry must succeed or fail together").
 
-### OD-3 — R-004 (`queue/` stdlib shadowing) interaction with Database-layer naming
+### OD-3 — R-004 (`queue_engine` stdlib shadowing) interaction with Database-layer naming
 
 **Resolved:** No collision. This codebase's top-level package is
 `database`, not `queue`; no module inside `database/` or `database/sqlite/`
 is named `queue`, `queue.py`, or shadows any standard-library module name.
 `RISK_REGISTER.md` R-004 concerns the *separate*, not-yet-implemented
-`queue/` package (Phase 8/9) and is unaffected by, and does not affect,
+`queue_engine` package (Phase 8/9) and is unaffected by, and does not affect,
 this Phase 6 deliverable.
 
 **Rationale:** Verified by direct inspection of every module name under
@@ -92,7 +92,7 @@ open only *whether* generation happens caller-side or repository-side.
 Caller-supplied UUIDs (as used throughout `tests/conftest.py`'s domain
 object factories) keep identity generation out of the Database boundary
 entirely, which is the simpler of the two options and imposes no
-constraint on how a future `queue/`/Business Rules layer chooses to
+constraint on how a future `queue_engine`/Business Rules layer chooses to
 generate identifiers (UUID4, ULID, or otherwise) — that choice remains
 entirely theirs, with no repository-side coupling.
 

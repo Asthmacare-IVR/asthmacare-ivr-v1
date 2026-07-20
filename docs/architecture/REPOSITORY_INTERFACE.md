@@ -60,7 +60,7 @@ persistence outbound).
 
 The `database/` directory (per ADR-002's directory responsibilities) is the
 sole location permitted to contain code that satisfies this contract.
-`api/`, `queue/`, and `dashboard/` must never import a concrete repository
+`api/`, `queue_engine`, and `dashboard/` must never import a concrete repository
 implementation.
 
 ---
@@ -323,7 +323,7 @@ phase:
 2. **Mechanism for the Transaction Boundary (Section 8)** — the concrete API
    shape for grouping operations into a unit of work is unresolved and
    deferred to Phase 5.1.
-3. **Resolution of R-004** — the `queue/` top-level package name shadows
+3. **Resolution of R-004** — the `queue_engine` top-level package name shadows
    Python's standard library `queue` module (`RISK_REGISTER.md`). This must
    be resolved before Phase 8 (Queue Engine implementation) and may affect
    how the Queue Engine imports the Repository Interface; tracked
@@ -333,7 +333,7 @@ phase:
    depends on data-handling requirements not yet ratified.
 5. **Placement of the interface definition itself** — whether the Repository
    Interface contract is defined inside `database/` or a shared/common
-   location accessible to both `queue/` and `database/` without violating
+   location accessible to both `queue_engine` and `database/` without violating
    the ADR-002 dependency rule is unresolved and must be settled at the
    start of Phase 5.1.
 

@@ -5,9 +5,9 @@
 - [x] Create approved top-level folder structure (ADR-002)
 - [x] Add directory-responsibility README.md to each top-level folder
 - [x] Add `__init__.py` to Python package directories (`api/`, `telephony/`,
-      `queue/`, `database/`, `config/`)
+      `queue_engine`, `database/`, `config/`)
 - [x] Create empty `telephony/interface.py` placeholder (contract, no methods)
-- [x] Log queue/ stdlib naming collision as R-004 in RISK_REGISTER.md
+- [x] Log queue_engine stdlib naming collision as R-004 in RISK_REGISTER.md
 - [x] Flag docs/ vs root-level documentation placement assumption
 - [ ] Product Owner / Chief Architect confirms docs/ placement assumption
 - [ ] Git commit Phase 2 structure

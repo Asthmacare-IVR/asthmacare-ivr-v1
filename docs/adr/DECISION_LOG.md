@@ -95,7 +95,7 @@ pilot remains SQLite.
 
 ### Decision 3 — Folder Structure
 **Resolution:** Approved in principle as the initial Phase 2 proposal
-(`api/, backend/, config/, dashboard/, database/, docs/, logs/, queue/,
+(`api/, backend/, config/, dashboard/, database/, docs/, logs/, queue_engine,
 telephony/, tests/, assets/, scripts/, .github/, .vscode/`). Names may be
 refined during Phase 2 implementation, but: no unnecessary directories, no
 architectural boundary changes, no added complexity. Must stay
@@ -132,7 +132,7 @@ without a corresponding ADR.
 ### Decision
 The top-level `backend/` directory is removed. Approved structure:
 ```
-api/  telephony/  queue/  database/  dashboard/  config/  docs/  tests/
+api/  telephony/  queue_engine  database/  dashboard/  config/  docs/  tests/
 logs/  assets/  scripts/  .github/  .vscode/
 ```
 
@@ -141,7 +141,7 @@ logs/  assets/  scripts/  .github/  .vscode/
 |---|---|
 | `api/` | REST API layer only — HTTP endpoints, validation, serialization. No business logic. |
 | `telephony/` | Telephony abstraction: `interface.py` (contract), future `adapters/`, future `mock/`. |
-| `queue/` | Core application logic — Queue Engine, appointment workflow, queue algorithms, orchestration. Must never import a concrete telephony adapter. |
+| `queue_engine` | Core application logic — Queue Engine, appointment workflow, queue algorithms, orchestration. Must never import a concrete telephony adapter. |
 | `database/` | SQLite access (pilot), future PostgreSQL migration, repository layer, migrations, seed scripts. |
 | `dashboard/` | Admin dashboard UI templates and static assets. No business logic. |
 | `config/` | Environment variables, logging configuration, application settings. |
@@ -165,7 +165,7 @@ where appropriate. **No runtime logic. No SIM900A code. No FastAPI
 application code.** Structure only.
 
 ### Risk identified during implementation
-`queue/` as a top-level package name shadows Python's standard library
+`queue_engine` as a top-level package name shadows Python's standard library
 `queue` module. Logged as R-004 in `RISK_REGISTER.md`. Must be resolved
 (rename, or src-layout namespacing) via a dedicated ADR before Phase 8 –
 Queue Engine implementation begins. Not blocking Phase 2 (structure only,

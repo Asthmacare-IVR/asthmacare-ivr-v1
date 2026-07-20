@@ -112,7 +112,7 @@ pattern already frozen for the telephony layer.
 Phase 5 implements `SQLiteRepository` classes conforming to the interfaces
 frozen here. A future (out-of-scope-for-v1.0) migration phase implements
 `PostgreSQLRepository` classes conforming to the same interfaces — no
-change to `queue/`, `api/`, or business rules.
+change to `queue_engine`, `api/`, or business rules.
 
 ---
 
@@ -121,7 +121,7 @@ change to `queue/`, `api/`, or business rules.
 ```
                     ┌───────────────────┐
                     │   Queue Engine     │
-                    │  (queue/)          │
+                    │  (queue_engine)          │
                     └─────────┬──────────┘
                               │ depends on (calls methods on)
                               ▼
@@ -149,13 +149,13 @@ intentional (see §3 Rationale above).
 
 | Module | May depend on | Must never depend on |
 |---|---|---|
-| `queue/` | Repository Interface(s) in `database/` | `SQLiteRepository`, any concrete repository, `sqlite3` module directly, any SQL string |
-| `api/` | `queue/` (goes through Queue Engine, not around it) | `database/` directly |
+| `queue_engine` | Repository Interface(s) in `database/` | `SQLiteRepository`, any concrete repository, `sqlite3` module directly, any SQL string |
+| `api/` | `queue_engine` (goes through Queue Engine, not around it) | `database/` directly |
 | Repository Interface (`database/`, abstract) | (nothing internal) | Any concrete repository, any storage-specific library |
-| `SQLiteRepository` (Phase 5) | Repository Interface it implements, `sqlite3` (or chosen driver) | `queue/`, `api/`, `telephony/` |
-| `PostgreSQLRepository` (future) | Same Repository Interface, PostgreSQL driver | `queue/`, `api/`, `telephony/` |
+| `SQLiteRepository` (Phase 5) | Repository Interface it implements, `sqlite3` (or chosen driver) | `queue_engine`, `api/`, `telephony/` |
+| `PostgreSQLRepository` (future) | Same Repository Interface, PostgreSQL driver | `queue_engine`, `api/`, `telephony/` |
 
-**Forbidden, explicitly:** `queue/` importing `sqlite3`, importing a
+**Forbidden, explicitly:** `queue_engine` importing `sqlite3`, importing a
 concrete repository class, or containing any raw SQL string. This is the
 data-layer equivalent of the telephony rule "Queue Engine must never import
 a concrete adapter" (`docs/SYSTEM_ARCHITECTURE.md` §3.4), and will be
@@ -203,7 +203,7 @@ migrating from SQLite to PostgreSQL in a future release consists of:
    operational task, not an architectural one, and out of scope for this
    document.
 
-No change to `queue/`, `api/`, business rules, or `dashboard/` is
+No change to `queue_engine`, `api/`, business rules, or `dashboard/` is
 required. This is the direct payoff of the Repository pattern chosen in §3,
 and mirrors how Cloud IVR/SIP adapters would be added later without
 touching the Queue Engine (`docs/SYSTEM_ARCHITECTURE.md` §3).
@@ -300,6 +300,6 @@ the concrete repository, not the interface and not the Queue Engine.
 | Exact Repository Interface method signatures | Phase 5 | Depends on Business Rules (Phase 4) defining actual domain data |
 | Number of repository interfaces (single vs. split by entity) | Phase 5 | Same — depends on Phase 4 output |
 | Whether to use an ORM (e.g. SQLAlchemy) inside `SQLiteRepository`, or raw `sqlite3` | Phase 5 | Implementation detail; either choice satisfies this architecture as long as it stays behind the Repository Interface |
-| Automated architecture-boundary enforcement (e.g. import-linter check preventing `queue/` from importing `sqlite3`) | Phase 5 or 8 | Same open question already raised for telephony boundary enforcement in `docs/SYSTEM_ARCHITECTURE.md` §6 — will be proposed together via a single tooling ADR rather than decided piecemeal |
+| Automated architecture-boundary enforcement (e.g. import-linter check preventing `queue_engine` from importing `sqlite3`) | Phase 5 or 8 | Same open question already raised for telephony boundary enforcement in `docs/SYSTEM_ARCHITECTURE.md` §6 — will be proposed together via a single tooling ADR rather than decided piecemeal |
 | Contract test suite shared across repository implementations | Phase 5 | Recommendation only; needs explicit approval before adoption |
 | Whether Appointment data and Queue-position data are one repository or two | Phase 4/5 boundary | Depends on Business Rules output |
