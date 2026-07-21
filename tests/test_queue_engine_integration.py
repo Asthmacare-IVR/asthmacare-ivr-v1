@@ -5,6 +5,7 @@ from datetime import datetime
 import pytest
 from database.domain import QueueEntry, QueueState
 from database.memory.unit_of_work import InMemoryUnitOfWork
+from database.memory.in_memory_repository import InMemoryStore
 from queue_engine.engine import QueueEngine, QueueEngineConfig
 
 
@@ -15,7 +16,9 @@ def engine():
 
 @pytest.fixture
 def uow():
-    return InMemoryUnitOfWork()
+    store = InMemoryStore()
+    with InMemoryUnitOfWork(store) as uow:
+        yield uow
 
 
 @pytest.fixture
