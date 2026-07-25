@@ -39,6 +39,14 @@ class Settings(BaseSettings):
     log_level: str = "INFO"
     api_host: str = "0.0.0.0"
     api_port: int = 8000
+    database_path: str = "asthmacare.db"
+    """Filesystem path for the SQLite Repository Interface implementation
+    (SQLITE_REPOSITORY_DESIGN.md §12: "configuration values are supplied
+    to the Repository by config/"). Consumed by
+    ``backend.api.dependencies`` to construct the ``SqliteConfig`` handed
+    to ``database.sqlite.factory.build_unit_of_work`` — added by GitHub
+    Issue #3 (Queue Engine Integration), which is the first phase to need
+    a real, request-scoped ``UnitOfWork``."""
 
 
 @lru_cache(maxsize=1)

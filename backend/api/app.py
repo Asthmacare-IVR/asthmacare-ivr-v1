@@ -15,7 +15,7 @@ from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
 
-from backend.api.routers import health, version
+from backend.api.routers import health, version, queue,
 from backend.config.settings import Settings, get_settings
 
 logger = logging.getLogger("asthmacare_ivr.backend")
@@ -73,6 +73,7 @@ def create_app() -> FastAPI:
 
     app.include_router(health.router)
     app.include_router(version.router)
+    app.include_router(queue.router)
 
     return app
 
