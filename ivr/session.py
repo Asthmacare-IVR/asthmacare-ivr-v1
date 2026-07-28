@@ -1,90 +1,59 @@
+"""IVR call session — ISSUE #5 PR-2A.
+
+`IVRSession` is `ivr.runtime.IVRRuntime`'s per-call bookkeeping: the
+pairing of a call's telephony identity with its
+`ivr.interface.IVRWorkflow` instance and the runtime's own housekeeping
+fields (retry count, last activity, current prompt, finished flag). It
+holds no orchestration logic of its own beyond two small, self-contained
+helpers — sequencing lives in `ivr.runtime.IVRRuntime`.
 """
-IVR session management for tracking call state, context, and retry counts.
-"""
 
-import time
-import logging
-from typing import Dict, Any, Optional
-from ivr.models import IVRContext, IVRState
+from __future__ import annotations
 
-logger = logging.getLogger(__name__)
+from dataclasses import dataclass, field
+from datetime import UTC, datetime
+
+from ivr.interface import IVRWorkflow
 
 
+def _utcnow() -> datetime:
+    return datetime.now(UTC)
+
+
+@dataclass
 class IVRSession:
-    """Represents an active IVR call session, tracking context, state, and retry metrics."""
+    """One active (or just-finished) call's IVR state.
 
-    def __init__(self, session_id: str, call_id: str, phone_number: str, initial_state: IVRState = IVRState.START):
-        """
-        Initialize an IVR session.
+    Field set per ISSUE #5 PR-2A ("SESSION MODEL"): `call_id`,
+    `phone_number`, `workflow`, `current_prompt`, `retry_count`,
+    `last_activity`, `finished`.
 
-        Args:
-            session_id: Unique identifier for the session.
-            call_id: Telephony call identifier.
-            phone_number: Caller's phone number.
-            initial_state: Starting state IVRState.
-        """
-        self.session_id = session_id
-        self.call_id = call_id
-        self.phone_number = phone_number
-        self.context = IVRContext(call_id=call_id, phone_number=phone_number, current_state=initial_state)
-        self.start_time = time.time()
-        self.last_activity_time = self.start_time
-        self.retry_counts: Dict[str, int] = {}
-        self.is_active = True
+    `patient_id` is one addition beyond that list: the runtime needs
+    somewhere to hold the digits collected during PATIENT_IDENTIFICATION
+    so it can populate `ivr.events.QueueRegistrationRequested.patient_id`
+    once the workflow reaches QUEUE_REGISTRATION.
+    `ivr.interface.IVRWorkflow`'s abstract contract (`start`, `next`,
+    `reset`, `current_state`, `is_finished`) has no setter for this, and
+    adding one would mean widening a frozen five-method interface for a
+    PR-2A-only concern (see docs/IVR_STATE_MACHINE.md, "Design
+    decisions"). Session-level storage avoids that without touching
+    `ivr/interface.py`.
+    """
 
-    @property
-    def current_state(self) -> IVRState:
-        return self.context.current_state
+    call_id: str
+    phone_number: str
+    workflow: IVRWorkflow
+    current_prompt: str | None = None
+    retry_count: int = 0
+    last_activity: datetime = field(default_factory=_utcnow)
+    finished: bool = False
+    patient_id: str | None = None
 
-    def update_state(self, new_state: IVRState) -> None:
-        """Transition session context to a new state and update activity timestamps."""
-        logger.info("Session %s transitioning state: %s -> %s", self.session_id, self.context.current_state.value, new_state.value)
-        self.context.current_state = new_state
-        self.last_activity_time = time.time()
+    def touch(self) -> None:
+        """Record activity now. Called on every inbound event/DTMF attempt."""
+        self.last_activity = _utcnow()
 
-    def increment_retry(self, state_name: Optional[str] = None) -> int:
-        """
-        Increment retry counter in context and local tracker.
-
-        Args:
-            state_name: Optional state name override.
-
-        Returns:
-            Updated retry count.
-        """
-        self.context.attempts += 1
-        target = state_name or self.context.current_state.value
-        current_count = self.retry_counts.get(target, 0) + 1
-        self.retry_counts[target] = current_count
-        self.last_activity_time = time.time()
-        logger.info("Session %s retry count incremented to %d", self.session_id, current_count)
-        return current_count
-
-    def get_retry_count(self, state_name: Optional[str] = None) -> int:
-        """Get current retry count for a state."""
-        target = state_name or self.context.current_state.value
-        return self.retry_counts.get(target, self.context.attempts)
-
-    def reset_retry(self, state_name: Optional[str] = None) -> None:
-        """Reset retry counters."""
-        self.context.attempts = 0
-        self.retry_counts.clear()
-
-    def terminate(self) -> None:
-        """Mark the session as inactive/terminated."""
-        logger.info("Terminating IVR session %s", self.session_id)
-        self.is_active = False
-        self.last_activity_time = time.time()
-
-    def to_dict(self) -> Dict[str, Any]:
-        """Export session details as a dictionary."""
-        return {
-            "session_id": self.session_id,
-            "call_id": self.call_id,
-            "phone_number": self.phone_number,
-            "current_state": self.context.current_state.value,
-            "attempts": self.context.attempts,
-            "start_time": self.start_time,
-            "last_activity_time": self.last_activity_time,
-            "is_active": self.is_active,
-        }
+    def mark_finished(self) -> None:
+        """Mark the session as concluded (successfully or not) and touch it."""
+        self.finished = True
+        self.touch()
